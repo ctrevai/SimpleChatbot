@@ -1,7 +1,7 @@
 import streamlit as st
 import chatbot_lib as glib
 
-st.set_page_config(page_title="Chatbot", page_icon=":robot:")
+st.set_page_config(page_title="Chatbot", page_icon="🤖")
 st.title("Chatbot")
 
 if 'memory' not in st.session_state:
@@ -14,11 +14,11 @@ for message in st.session_state.chat_history:
     with st.chat_message(message["role"]):
         st.markdown(message["text"])
 
-input_text = st.chat_input("Chat with your bot here")
+input_text = st.chat_input("Chat with your assistant here")
 
 if input_text:
 
-    with st.chat_message("user"):
+    with st.chat_message("human"):
         st.markdown(input_text)
 
     st.session_state.chat_history.append({"role": "user", "text": input_text})
