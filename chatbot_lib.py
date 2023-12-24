@@ -2,6 +2,7 @@
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain.llms.bedrock import Bedrock
 from langchain.chains import ConversationChain
+from langchain.prompts import PromptTemplate
 
 
 def get_llm():
@@ -45,6 +46,25 @@ def get_chat_response(input_text, memory):  # chat client function
         memory=memory,  # with the summarization memory
         verbose=True  # print out some of the internal states of the chain while running
     )
+
+    claude_prompt = PromptTemplate.from_template("""
+
+    Human: The following is a friendly conversation between a human and an AI.
+    The AI is talkative and provides lots of specific details from its context. If the AI does not know
+    the answer to a question, it truthfully says it does not know.
+
+    Current conversation:
+    
+    {history}
+
+    Here is the human's next reply:
+
+    {input}
+
+    Assistant:
+    """)
+
+    conversation_with_summary.prompt = claude_prompt  # set the prompt for the client
 
     # pass the user message and summary to the model
     chat_response = conversation_with_summary.predict(input=input_text)
